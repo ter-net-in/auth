@@ -29,7 +29,8 @@ export async function registerFirstPartyClient(input: {
     scopes: input.scopes ?? ['openid', 'profile', 'email'],
     grantTypes: ['authorization_code', 'refresh_token'],
     responseTypes: ['code'],
-    tokenEndpointAuthMethod: 'client_secret_basic',
+    // Better Auth's genericOAuth consumer sends the secret in the body.
+    tokenEndpointAuthMethod: 'client_secret_post',
     requirePKCE: true,
     skipConsent: input.skipConsent ?? true,
     disabled: false,
@@ -38,6 +39,16 @@ export async function registerFirstPartyClient(input: {
   })
 
   return { clientId, clientSecret }
+}
+
+/** Display name for a client id, for the consent screen. */
+export async function getOAuthClientName(clientId: string): Promise<string | null> {
+  const [row] = await db
+    .select({ name: schema.oauthClient.name })
+    .from(schema.oauthClient)
+    .where(eq(schema.oauthClient.clientId, clientId))
+    .limit(1)
+  return row?.name ?? null
 }
 
 export async function listOAuthClients() {

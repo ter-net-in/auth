@@ -1,4 +1,5 @@
 import { auth } from '@ternetin/auth'
+import { getOAuthClientName } from '@ternetin/auth/oauth-clients'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { ConsentForm } from '@/components/consent-form'
@@ -18,10 +19,11 @@ export default async function ConsentPage({
 
   const clientId = typeof sp.client_id === 'string' ? sp.client_id : ''
   const scopes = (typeof sp.scope === 'string' ? sp.scope : '').split(' ').filter(Boolean)
+  const clientName = (clientId ? await getOAuthClientName(clientId) : null) ?? 'An application'
 
   return (
     <main className="flex min-h-dvh items-center justify-center p-6">
-      <ConsentForm clientName={clientId || 'An application'} scopes={scopes} />
+      <ConsentForm clientName={clientName} scopes={scopes} />
     </main>
   )
 }
