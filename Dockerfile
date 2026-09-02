@@ -12,7 +12,13 @@ COPY packages/oauth/package.json packages/oauth/package.json
 COPY packages/protocol/package.json packages/protocol/package.json
 RUN bun install --frozen-lockfile
 
-# Build the web app
+# Build the web app.
+# next build imports the config/db packages, which validate these at load time.
+# Build-only placeholders — no DB connection happens at build, and the runtime
+# stage below gets the real values from the env_file. Not secrets.
+ENV DATABASE_URL=postgres://build:build@localhost:5432/build \
+    BETTER_AUTH_SECRET=build-time-placeholder-not-used-at-runtime \
+    BETTER_AUTH_URL=http://localhost:3000
 COPY . .
 RUN bun run --filter '@ternetin/web' build
 
