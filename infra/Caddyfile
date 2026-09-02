@@ -1,0 +1,5 @@
+# Reverse proxy for auth.ter.net.in → the web container's loopback port.
+# WEB_PORT must match the value in .env (the host port docker-compose binds).
+auth.ter.net.in {
+  reverse_proxy 127.0.0.1:{$WEB_PORT:3000}
+}

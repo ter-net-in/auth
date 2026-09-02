@@ -1,0 +1,50 @@
+name: Deploy VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Write production env
+        run: |
+          cat > .env <<'EOF'
+          ${{ secrets.PRODUCTION_ENV }}
+          EOF
+
+      - name: Copy files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          source: "."
+          target: ${{ secrets.VPS_APP_DIR }}
+          rm: true
+
+      - name: Deploy with Docker Compose
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script: |
+            set -euo pipefail
+            cd "${{ secrets.VPS_APP_DIR }}"
+            docker compose -f infra/docker-compose.yml --env-file .env build
+            docker compose -f infra/docker-compose.yml --env-file .env up -d postgres
+            docker compose -f infra/docker-compose.yml --env-file .env run --rm web bun run db:migrate
+            docker compose -f infra/docker-compose.yml --env-file .env up -d
+            docker image prune -f

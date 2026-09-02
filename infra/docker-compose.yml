@@ -1,0 +1,35 @@
+name: authkit
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-authkit}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-authkit}
+      POSTGRES_DB: ${POSTGRES_DB:-authkit}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-authkit} -d ${POSTGRES_DB:-authkit}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Host port from .env (WEB_PORT) so it won't clash with other apps on the box.
+    # Loopback-only — put Caddy/nginx in front for TLS (see infra/Caddyfile).
+    ports:
+      - "127.0.0.1:${WEB_PORT:-3000}:3000"
+
+volumes:
+  postgres-data:

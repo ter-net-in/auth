@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: authkit
+          POSTGRES_PASSWORD: authkit
+          POSTGRES_DB: authkit
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U authkit"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      # Build-time config (config package reads these at import). Not secrets.
+      DATABASE_URL: postgres://authkit:authkit@localhost:5432/authkit
+      BETTER_AUTH_SECRET: ci-only-secret-not-for-production
+      BETTER_AUTH_URL: http://localhost:3000
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Apply migrations (validates schema ↔ migrations)
+        run: bun run db:migrate
+
+      - name: Build
+        run: bun run build

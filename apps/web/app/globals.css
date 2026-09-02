@@ -1,0 +1,5 @@
+@import "../src/theme/globals.css";
+
+/* Tailwind v4 content sources (relative to this file). */
+@source "../app";
+@source "../src";

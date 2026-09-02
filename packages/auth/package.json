@@ -1,0 +1,25 @@
+{
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@better-auth/oauth-provider": "^1.7.2",
+    "@ternetin/config": "workspace:*",
+    "@ternetin/db": "workspace:*",
+    "better-auth": "^1.2.12",
+    "drizzle-orm": "^0.44.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "name": "@ternetin/auth",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./invitations": "./src/invitations.ts",
+    "./oauth-clients": "./src/oauth-clients.ts"
+  }
+}
