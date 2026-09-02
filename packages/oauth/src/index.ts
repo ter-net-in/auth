@@ -15,6 +15,11 @@ export interface TernetinOptions {
   scopes?: string[]
   /** Provider id used to reference this connection. Default: "ternetin" */
   providerId?: string
+  /**
+   * When true, `authClient.signOut()` only clears the local session and does NOT
+   * end the session on auth.ter.net.in (no OIDC RP-initiated logout).
+   */
+  disableProviderLogout?: boolean
 }
 
 /**
@@ -40,7 +45,8 @@ export function ternetin(options: TernetinOptions): BetterAuthPlugin {
         clientSecret: options.clientSecret,
         discoveryUrl: discoveryUrl(options.authUrl),
         scopes: options.scopes ?? [...DEFAULT_SCOPES],
-        pkce: true
+        pkce: true,
+        ...(options.disableProviderLogout ? { disableProviderLogout: true } : {})
       }
     ]
   })
