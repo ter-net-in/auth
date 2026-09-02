@@ -1,4 +1,4 @@
-import { randomBytes, randomUUID } from 'node:crypto'
+import { createHash, randomBytes, randomUUID } from 'node:crypto'
 import { db, schema } from '@ternetin/db'
 import { desc, eq } from 'drizzle-orm'
 
@@ -17,12 +17,16 @@ export async function registerFirstPartyClient(input: {
 }): Promise<RegisteredClient> {
   const clientId = randomUUID()
   const clientSecret = randomBytes(32).toString('base64url')
+  // The provider stores secrets hashed (oauthProvider default with JWT on:
+  // storeClientSecret: 'hashed' = base64url(sha256(secret))). Store the hash; the
+  // plaintext is returned to the caller once.
+  const storedSecret = createHash('sha256').update(clientSecret).digest('base64url')
   const now = new Date()
 
   await db.insert(schema.oauthClient).values({
     id: randomUUID(),
     clientId,
-    clientSecret,
+    clientSecret: storedSecret,
     name: input.name,
     redirectUris: input.redirectUris,
     postLogoutRedirectUris: input.redirectUris,
