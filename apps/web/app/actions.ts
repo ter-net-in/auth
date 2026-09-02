@@ -19,7 +19,8 @@ export async function createInviteAction(
   try {
     const session = await requireAdmin()
     const email = String(formData.get('email') ?? '').trim()
-    const role = String(formData.get('role') ?? 'member')
+    // Clamp to valid roles — the <select> is client-side only.
+    const role = String(formData.get('role') ?? 'member') === 'admin' ? 'admin' : 'member'
     if (!email) return { ok: false, error: 'Email required' }
     const invite = await createInvitation({ email, role, invitedBy: session.user.id })
     return { ok: true, email: invite.email, url: inviteAcceptUrl(invite.token) }

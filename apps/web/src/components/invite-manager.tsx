@@ -23,7 +23,14 @@ export function InviteManager() {
         </Field>
         <Field>
           <FieldLabel>Role</FieldLabel>
-          <Input name="role" defaultValue="member" />
+          <select
+            name="role"
+            defaultValue="member"
+            className="flex h-10 w-full rounded-[0.5rem] border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <option value="member">member</option>
+            <option value="admin">admin</option>
+          </select>
         </Field>
         <Button type="submit" disabled={pending}>
           {pending ? 'Creating…' : 'Create invite'}
