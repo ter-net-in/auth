@@ -1,6 +1,6 @@
 {
   "name": "@ternetin/oauth",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Plug-and-play Better Auth plugin to sign in through auth.ter.net.in (OIDC).",
   "type": "module",
   "license": "MIT",
