@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { type HTMLMotionProps, motion, type Transition, useReducedMotion, type Variants } from 'motion/react'
-import * as React from 'react'
+import { type HTMLMotionProps, motion, type Transition, useReducedMotion, type Variants } from 'motion/react';
+import * as React from 'react';
 
 /**
  * Shared motion language for internet-ui.
@@ -61,7 +61,7 @@ export const easings = {
   in: [0.4, 0, 1, 1],
   /** Symmetric. For size and position changes on things already on screen. */
   inOut: [0.32, 0.72, 0, 1]
-} as const satisfies Record<string, [number, number, number, number]>
+} as const satisfies Record<string, [number, number, number, number]>;
 
 /** Seconds. Deliberately short — this library should feel immediate. */
 export const durations = {
@@ -69,7 +69,7 @@ export const durations = {
   fast: 0.15,
   base: 0.2,
   slow: 0.28
-} as const
+} as const;
 
 export const transitions = {
   /** A surface appearing: popovers, menus, dialogs, tooltips. */
@@ -86,15 +86,15 @@ export const transitions = {
   indicator: { type: 'spring', stiffness: 550, damping: 42, mass: 0.9 },
   /** Larger surfaces sliding into place: toasts. */
   surface: { type: 'spring', stiffness: 420, damping: 38, mass: 0.9 }
-} as const satisfies Record<string, Transition>
+} as const satisfies Record<string, Transition>;
 
 /**
  * Minimal shape of the state Base UI passes to a `render` callback. `side` is
  * typed loosely so this stays assignable to every component's own state type.
  */
 export interface PopupMotionState {
-  open: boolean
-  side?: string
+  open: boolean;
+  side?: string;
 }
 
 export interface PopupMotionOptions {
@@ -102,41 +102,41 @@ export interface PopupMotionOptions {
    * Scale the surface grows from. `1` opts out of scaling.
    * @default 0.96
    */
-  scale?: number
+  scale?: number;
   /**
    * Distance in px the surface travels toward its anchor as it appears. The
    * direction comes from the `side` the positioner reports, so a popup anchored
    * below its trigger slides down into place.
    * @default 4
    */
-  offset?: number
+  offset?: number;
   /** Overrides the enter transition. */
-  transition?: Transition
+  transition?: Transition;
   /** Overrides the exit transition. */
-  exitTransition?: Transition
+  exitTransition?: Transition;
 }
 
 /** Motion props derived from a Base UI open state. */
 export interface StateMotionProps {
-  initial: string
-  animate: string
-  variants: Variants
+  initial: string;
+  animate: string;
+  variants: Variants;
 }
 
 function offsetFor(side: string | undefined, offset: number) {
   switch (side) {
     case 'top':
-      return { y: offset }
+      return { y: offset };
     case 'bottom':
-      return { y: -offset }
+      return { y: -offset };
     case 'left':
     case 'inline-start':
-      return { x: offset }
+      return { x: offset };
     case 'right':
     case 'inline-end':
-      return { x: -offset }
+      return { x: -offset };
     default:
-      return {}
+      return {};
   }
 }
 
@@ -150,8 +150,8 @@ function offsetFor(side: string | undefined, offset: number) {
  * keeps unmount deferral intact, since opacity is still animated.
  */
 export function usePopupMotion(options: PopupMotionOptions = {}) {
-  const { scale = 0.96, offset = 4, transition = transitions.enter, exitTransition = transitions.exit } = options
-  const reduceMotion = useReducedMotion()
+  const { scale = 0.96, offset = 4, transition = transitions.enter, exitTransition = transitions.exit } = options;
+  const reduceMotion = useReducedMotion();
 
   return React.useCallback(
     (state: PopupMotionState): StateMotionProps => ({
@@ -165,7 +165,7 @@ export function usePopupMotion(options: PopupMotionOptions = {}) {
       }
     }),
     [reduceMotion, scale, offset, transition, exitTransition]
-  )
+  );
 }
 
 /**
@@ -177,14 +177,14 @@ export function usePopupMotion(options: PopupMotionOptions = {}) {
  * ```
  */
 export function useMotionPopupRender(options?: PopupMotionOptions) {
-  const popupMotion = usePopupMotion(options)
+  const popupMotion = usePopupMotion(options);
 
   return React.useCallback(
     (props: React.HTMLAttributes<HTMLElement>, state: PopupMotionState) => (
       <motion.div {...(props as HTMLMotionProps<'div'>)} {...popupMotion(state)} />
     ),
     [popupMotion]
-  )
+  );
 }
 
 /**
@@ -202,14 +202,14 @@ export function useMotionBackdropRender(transition: Transition = transitions.fad
       }
     }),
     [transition]
-  )
+  );
 
   return React.useCallback(
     (props: React.HTMLAttributes<HTMLElement>, state: { open: boolean }) => (
       <motion.div {...(props as HTMLMotionProps<'div'>)} {...backdropMotion(state)} />
     ),
     [backdropMotion]
-  )
+  );
 }
 
 /**
@@ -219,7 +219,7 @@ export function useMotionBackdropRender(transition: Transition = transitions.fad
  * a scale on press is exactly the kind of movement that setting asks us to drop.
  */
 export function useTapMotion(scale = 0.97) {
-  const reduceMotion = useReducedMotion()
+  const reduceMotion = useReducedMotion();
 
   return React.useMemo(
     () =>
@@ -230,7 +230,7 @@ export function useTapMotion(scale = 0.97) {
             transition: { duration: durations.instant, ease: easings.out } satisfies Transition
           },
     [reduceMotion, scale]
-  )
+  );
 }
 
 /**
@@ -238,6 +238,6 @@ export function useTapMotion(scale = 0.97) {
  * the user asks for reduced motion.
  */
 export function useControlTransition(transition: Transition = transitions.control): Transition {
-  const reduceMotion = useReducedMotion()
-  return reduceMotion ? transitions.fade : transition
+  const reduceMotion = useReducedMotion();
+  return reduceMotion ? transitions.fade : transition;
 }
