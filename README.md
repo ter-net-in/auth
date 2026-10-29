@@ -49,7 +49,7 @@ unexpired invitation** exists for their email — otherwise `403`.
 
 `auth.ter.net.in` is also a full **OAuth 2.1 / OIDC provider** (via
 `@better-auth/oauth-provider` + the `jwt` plugin), so other Better Auth apps can
-sign in *through* it. Discovery is live at:
+sign in _through_ it. Discovery is live at:
 
 ```
 https://auth.ter.net.in/api/auth/.well-known/openid-configuration
@@ -92,13 +92,15 @@ import { genericOAuth } from 'better-auth/plugins'
 export const auth = betterAuth({
   plugins: [
     genericOAuth({
-      config: [{
-        providerId: 'ternetin',
-        clientId: process.env.TERNETIN_CLIENT_ID!,
-        clientSecret: process.env.TERNETIN_CLIENT_SECRET!,
-        discoveryUrl: 'https://auth.ter.net.in/api/auth/.well-known/openid-configuration',
-        scopes: ['openid', 'profile', 'email']
-      }]
+      config: [
+        {
+          providerId: 'ternetin',
+          clientId: process.env.TERNETIN_CLIENT_ID!,
+          clientSecret: process.env.TERNETIN_CLIENT_SECRET!,
+          discoveryUrl: 'https://auth.ter.net.in/api/auth/.well-known/openid-configuration',
+          scopes: ['openid', 'profile', 'email']
+        }
+      ]
     })
   ]
 })
@@ -124,9 +126,9 @@ Then open `http://localhost:3000`, sign up as the bootstrap admin, and invite fr
 
 ### Production env (`.env.example`)
 
-| var                | value                                        |
-| ------------------ | -------------------------------------------- |
-| `BETTER_AUTH_URL`  | `https://auth.ter.net.in`                    |
-| `COOKIE_DOMAIN`    | `.ter.net.in`                                |
-| `TRUSTED_ORIGINS`  | `https://ter.net.in,https://*.ter.net.in`    |
-| `ADMIN_EMAILS`     | comma-separated bootstrap admin emails       |
+| var               | value                                     |
+| ----------------- | ----------------------------------------- |
+| `BETTER_AUTH_URL` | `https://auth.ter.net.in`                 |
+| `COOKIE_DOMAIN`   | `.ter.net.in`                             |
+| `TRUSTED_ORIGINS` | `https://ter.net.in,https://*.ter.net.in` |
+| `ADMIN_EMAILS`    | comma-separated bootstrap admin emails    |

@@ -1,0 +1,14 @@
+{
+  "registry": "https://ui.ter.net.in",
+  "tsx": true,
+  "paths": {
+    "ui": "src/ui",
+    "lib": "src/lib",
+    "css": "src/theme/globals.css"
+  },
+  "aliases": {
+    "ui": "@/ui",
+    "lib": "@/lib",
+    "utils": "@/lib/utils"
+  }
+}

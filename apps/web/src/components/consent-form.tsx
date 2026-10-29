@@ -2,6 +2,7 @@
 
 import { authClient } from '@ternetin/auth/client'
 import { useState } from 'react'
+import { Alert } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card'
 
@@ -32,21 +33,32 @@ export function ConsentForm({ clientName, scopes }: { clientName: string; scopes
   }
 
   return (
-    <Card corners="diagonal" className="w-full max-w-sm" padding="lg">
+    <Card className="w-full max-w-md" padding="lg">
       <CardHeader>
-        <CardTitle>Authorize {clientName}</CardTitle>
+        <CardTitle role="heading" aria-level={1}>
+          Authorize {clientName}
+        </CardTitle>
         <CardDescription>{clientName} wants to access your ter.net.in account.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         <ul className="flex flex-col gap-1 text-sm">
           {scopes.map((s) => (
             <li key={s} className="flex items-center gap-2">
-              <span className="text-primary">→</span>
+              <svg
+                viewBox="0 0 16 16"
+                className="size-4 shrink-0 text-primary"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                aria-hidden="true"
+              >
+                <path d="m4 8 3 3 5-6" />
+              </svg>
               {SCOPE_LABELS[s] ?? s}
             </li>
           ))}
         </ul>
-        {error ? <p className="text-xs text-destructive">{error}</p> : null}
+        {error ? <Alert tone="danger">{error}</Alert> : null}
         <div className="flex gap-2">
           <Button variant="outline" className="flex-1" disabled={pending !== null} onClick={() => decide(false)}>
             {pending === 'deny' ? 'Denying…' : 'Deny'}

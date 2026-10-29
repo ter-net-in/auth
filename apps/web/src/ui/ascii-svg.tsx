@@ -1,9 +1,6 @@
 'use client'
-
 import * as React from 'react'
-
 import { cn } from '@/lib/utils'
-
 /** Brightness ramps, dark → light. */
 export const ASCII_RAMPS = {
   standard: ' .:-=+*#%@',
@@ -13,7 +10,6 @@ export const ASCII_RAMPS = {
   binary: '01',
   dots: ' ·•●'
 } as const
-
 export interface AsciiSvgProps extends Omit<React.ComponentProps<'pre'>, 'children'> {
   /** The SVG (or any node containing one) to ASCII-fy. Rendered off-screen and sampled. */
   children: React.ReactNode
@@ -30,7 +26,6 @@ export interface AsciiSvgProps extends Omit<React.ComponentProps<'pre'>, 'childr
   /** Invert the ramp (light shapes on a dark ground). */
   invert?: boolean
 }
-
 /**
  * Globs an SVG out of its children, rasterizes it to an offscreen canvas and maps
  * per-cell brightness onto an ASCII ramp — the classic image-to-ASCII trick, applied
@@ -54,7 +49,6 @@ export function AsciiSvg({
 }: AsciiSvgProps) {
   const hostRef = React.useRef<HTMLDivElement>(null)
   const [art, setArt] = React.useState('')
-
   // Reserve the box before first paint with a same-size blank grid, so the ASCII
   // filling in on the first (async) sample doesn't resize the layout and jump.
   const useIsoLayout = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect
@@ -70,28 +64,23 @@ export function AsciiSvg({
     // Placeholder only — run once on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: children is listed so the loop restarts when the source SVG changes.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: children re-runs sampling when the SVG source changes.
   React.useEffect(() => {
     const host = hostRef.current
     if (!host || typeof window === 'undefined') return
-
     let stopped = false
     let timer = 0
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d', { willReadFrequently: true })
     if (!ctx) return
-
     const sample = () =>
       new Promise<void>((resolve) => {
         const svg = host.querySelector(select) as SVGSVGElement | null
         if (!svg) return resolve()
-
         const rect = svg.getBoundingClientRect()
         const w = rect.width || svg.viewBox?.baseVal?.width || 100
         const h = rect.height || svg.viewBox?.baseVal?.height || 100
         const rows = Math.max(1, Math.round(cols * (h / w) * 0.5)) // 0.5 ≈ char aspect
-
         let markup = new XMLSerializer().serializeToString(svg)
         markup = markup
           // Theme surfaces read as the knockout (black), so holes stay holes.
@@ -100,11 +89,9 @@ export function AsciiSvg({
           .replace(/var\([^)]*\)/gi, '#ffffff')
         if (!/<svg[^>]*\swidth=/i.test(markup)) markup = markup.replace('<svg', `<svg width="${w}"`)
         if (!/<svg[^>]*\sheight=/i.test(markup)) markup = markup.replace('<svg', `<svg height="${h}"`)
-
         const img = new Image()
         const blob = new Blob([markup], { type: 'image/svg+xml' })
         const url = URL.createObjectURL(blob)
-
         img.onload = () => {
           const m = 4 // super-sample each cell
           canvas.width = cols * m
@@ -113,7 +100,6 @@ export function AsciiSvg({
           ctx.fillRect(0, 0, canvas.width, canvas.height)
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
           const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data
-
           let out = ''
           for (let y = 0; y < rows; y++) {
             for (let x = 0; x < cols; x++) {
@@ -130,7 +116,6 @@ export function AsciiSvg({
             }
             out += '\n'
           }
-
           URL.revokeObjectURL(url)
           if (!stopped) setArt(out)
           resolve()
@@ -141,20 +126,17 @@ export function AsciiSvg({
         }
         img.src = url
       })
-
     const loop = async () => {
       if (stopped) return
       await sample()
       if (!stopped && live) timer = window.setTimeout(loop, 1000 / fps)
     }
     loop()
-
     return () => {
       stopped = true
       window.clearTimeout(timer)
     }
   }, [children, cols, chars, select, live, fps, invert])
-
   return (
     <>
       {/* Off-screen source: laid out & animated by the browser, sampled each frame. */}

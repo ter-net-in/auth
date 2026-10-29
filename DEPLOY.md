@@ -14,14 +14,14 @@ the host.
 
 ## GitHub repository secrets (Settings → Secrets and variables → Actions)
 
-| secret           | value                                                           |
-| ---------------- | --------------------------------------------------------------- |
-| `VPS_HOST`       | `217.182.64.210`                                                |
-| `VPS_USER`       | `ubuntu`                                                        |
-| `VPS_PORT`       | `6722`                                                          |
+| secret           | value                                                             |
+| ---------------- | ----------------------------------------------------------------- |
+| `VPS_HOST`       | `217.182.64.210`                                                  |
+| `VPS_USER`       | `ubuntu`                                                          |
+| `VPS_PORT`       | `6722`                                                            |
 | `VPS_SSH_KEY`    | private key whose public key is in the server's `authorized_keys` |
-| `VPS_APP_DIR`    | deploy path, e.g. `/home/ubuntu/authkit`                        |
-| `PRODUCTION_ENV` | the full production `.env` contents (see `.env.example`)        |
+| `VPS_APP_DIR`    | deploy path, e.g. `/home/ubuntu/authkit`                          |
+| `PRODUCTION_ENV` | the full production `.env` contents (see `.env.example`)          |
 
 `PRODUCTION_ENV` — fill in `.env.example` and paste it whole. Set `WEB_PORT` to a
 port that's free on the box (e.g. `4310`) so it doesn't overlap other apps.

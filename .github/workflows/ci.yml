@@ -50,6 +50,12 @@ jobs:
       - name: Typecheck
         run: bun run typecheck
 
+      - name: Security regression tests
+        run: bun test packages/db/test
+
+      - name: Audit
+        run: bun audit --audit-level=high
+
       - name: Apply migrations (validates schema ↔ migrations)
         run: bun run db:migrate
 

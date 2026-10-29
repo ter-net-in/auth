@@ -11,7 +11,7 @@ export function InviteManager() {
   const [state, action, pending] = useActionState(createInviteAction, null)
 
   return (
-    <Card corners="diagonal" cornerTone="split" padding="lg" className="w-full">
+    <Card padding="lg" className="w-full">
       <CardHeader>
         <CardTitle>Invite a member</CardTitle>
         <CardDescription>Only invited emails can create an account.</CardDescription>
@@ -22,11 +22,12 @@ export function InviteManager() {
           <Input name="email" type="email" required placeholder="new.member@example.com" />
         </Field>
         <Field>
-          <FieldLabel>Role</FieldLabel>
+          <FieldLabel htmlFor="invite-role">Role</FieldLabel>
           <select
+            id="invite-role"
             name="role"
             defaultValue="member"
-            className="flex h-10 w-full rounded-[0.5rem] border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="ui-control flex h-9 w-full rounded-control border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <option value="member">member</option>
             <option value="admin">admin</option>
@@ -37,7 +38,7 @@ export function InviteManager() {
         </Button>
       </form>
       {state?.ok ? (
-        <div className="flex flex-col gap-1 border border-border bg-muted p-3 text-xs">
+        <div className="flex flex-col gap-1 rounded-surface border border-border bg-muted p-3 text-xs">
           <span className="font-semibold uppercase tracking-wide">Invite link for {state.email}</span>
           <code className="break-all">{state.url}</code>
         </div>
