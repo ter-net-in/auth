@@ -4,6 +4,6 @@
 .git
 .github
 .env
-.env.local
+.env.*
 *.log
 **/drizzle/meta/_journal.json.lock

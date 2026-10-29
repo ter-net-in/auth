@@ -61,3 +61,10 @@ jobs:
 
       - name: Build
         run: bun run build
+
+      - name: Build production container
+        run: docker build --tag authkit:ci .
+      - name: Verify production runtimes
+        run: |
+          docker run --rm authkit:ci node --version
+          docker run --rm authkit:ci bun --version

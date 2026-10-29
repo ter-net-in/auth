@@ -1,5 +1,10 @@
+# Next.js runs on Node in CI and production; Bun retains its package/service roles.
 # Production image for the @ternetin/web (auth.ter.net.in) Next.js app.
-FROM oven/bun:1.3.13 AS build
+FROM oven/bun:1.3.13 AS bun
+FROM node:24-bookworm-slim AS base
+COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
+
+FROM base AS build
 WORKDIR /app
 
 # Install dependencies (layer cached on lockfile + manifests)
@@ -20,9 +25,9 @@ ENV DATABASE_URL=postgres://build:build@localhost:5432/build \
     BETTER_AUTH_SECRET=build-time-placeholder-not-used-at-runtime \
     BETTER_AUTH_URL=http://localhost:3000
 COPY . .
-RUN bun run --filter '@ternetin/web' build
+RUN node apps/web/node_modules/next/dist/bin/next build apps/web
 
-FROM oven/bun:1.3.13 AS runtime
+FROM base AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app ./
@@ -30,4 +35,4 @@ EXPOSE 3000
 
 # Serve (internal port 3000). Migrations run as a separate deploy step, not here,
 # so a container restart never races the DB. DATABASE_URL etc. come from env_file.
-CMD ["sh", "-c", "bun --filter '@ternetin/web' start"]
+CMD ["node", "apps/web/node_modules/next/dist/bin/next", "start", "apps/web", "-p", "3000"]
