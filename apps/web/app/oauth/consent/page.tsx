@@ -3,6 +3,7 @@ import { getOAuthClientName } from '@ternetin/auth/oauth-clients'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { ConsentForm } from '@/components/consent-form'
+import { AuthLayout } from '@/ui/auth-layout'
 
 export default async function ConsentPage({
   searchParams
@@ -22,8 +23,8 @@ export default async function ConsentPage({
   const clientName = (clientId ? await getOAuthClientName(clientId) : null) ?? 'An application'
 
   return (
-    <main className="flex min-h-dvh items-center justify-center p-6">
+    <AuthLayout>
       <ConsentForm clientName={clientName} scopes={scopes} />
-    </main>
+    </AuthLayout>
   )
 }

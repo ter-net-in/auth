@@ -3,6 +3,7 @@
 import { signIn } from '@ternetin/auth/client'
 import { useState } from 'react'
 import { safeRedirect } from '@/lib/redirect'
+import { Alert } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/ui/card'
 import { Field, FieldLabel } from '@/ui/field'
@@ -32,9 +33,11 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
   }
 
   return (
-    <Card corners="diagonal" className="w-full max-w-sm" padding="lg">
+    <Card className="w-full max-w-md" padding="lg">
       <CardHeader>
-        <CardTitle>Sign in</CardTitle>
+        <CardTitle role="heading" aria-level={1}>
+          Sign in
+        </CardTitle>
         <CardDescription>ter.net.in — invite only</CardDescription>
       </CardHeader>
       <Form onSubmit={onSubmit}>
@@ -46,7 +49,7 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
           <FieldLabel>Password</FieldLabel>
           <Input name="password" type="password" autoComplete="current-password" required />
         </Field>
-        {error ? <p className="text-xs text-destructive">{error}</p> : null}
+        {error ? <Alert tone="danger">{error}</Alert> : null}
         <Button type="submit" disabled={pending} className="w-full">
           {pending ? 'Signing in…' : 'Sign in'}
         </Button>

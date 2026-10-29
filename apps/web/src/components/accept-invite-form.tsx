@@ -3,6 +3,7 @@
 import { signUp } from '@ternetin/auth/client'
 import { useState } from 'react'
 import { safeRedirect } from '@/lib/redirect'
+import { Alert } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/ui/card'
 import { Field, FieldLabel } from '@/ui/field'
@@ -32,9 +33,11 @@ export function AcceptInviteForm({ email, redirectTo }: { email: string; redirec
   }
 
   return (
-    <Card corners="diagonal" className="w-full max-w-sm" padding="lg">
+    <Card className="w-full max-w-md" padding="lg">
       <CardHeader>
-        <CardTitle>Accept invite</CardTitle>
+        <CardTitle role="heading" aria-level={1}>
+          Accept invite
+        </CardTitle>
         <CardDescription>Create your ter.net.in account</CardDescription>
       </CardHeader>
       <Form onSubmit={onSubmit}>
@@ -50,7 +53,7 @@ export function AcceptInviteForm({ email, redirectTo }: { email: string; redirec
           <FieldLabel>Password</FieldLabel>
           <Input name="password" type="password" required minLength={8} autoComplete="new-password" />
         </Field>
-        {error ? <p className="text-xs text-destructive">{error}</p> : null}
+        {error ? <Alert tone="danger">{error}</Alert> : null}
         <Button type="submit" disabled={pending} className="w-full">
           {pending ? 'Creating…' : 'Create account'}
         </Button>

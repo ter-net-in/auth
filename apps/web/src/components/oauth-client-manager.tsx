@@ -5,6 +5,7 @@ import { Button } from '@/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/ui/card'
 import { Field, FieldLabel } from '@/ui/field'
 import { Input } from '@/ui/input'
+import { Textarea } from '@/ui/textarea'
 import { createOAuthClientAction, disableOAuthClientAction } from '../../app/actions'
 
 type Client = {
@@ -20,7 +21,7 @@ export function OAuthClientManager({ clients }: { clients: Client[] }) {
   const [isPending, startTransition] = useTransition()
 
   return (
-    <Card corners="diagonal" cornerTone="split" padding="lg" className="w-full">
+    <Card padding="lg" className="w-full">
       <CardHeader>
         <CardTitle>Register an app</CardTitle>
         <CardDescription>An OAuth client so another site can sign in through ter.net.in.</CardDescription>
@@ -32,13 +33,13 @@ export function OAuthClientManager({ clients }: { clients: Client[] }) {
           <Input name="name" required placeholder="My Site" />
         </Field>
         <Field>
-          <FieldLabel>Redirect URIs</FieldLabel>
-          <textarea
+          <FieldLabel htmlFor="oauth-redirect-uris">Redirect URIs</FieldLabel>
+          <Textarea
+            id="oauth-redirect-uris"
             name="redirectUris"
             required
             rows={3}
             placeholder="https://mysite.com/api/auth/oauth2/callback/ternetin"
-            className="flex w-full rounded-[0.5rem] border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
           />
           <span className="text-xs text-muted-foreground">
             One per line — usually <code>{'<origin>'}/api/auth/oauth2/callback/ternetin</code>.
@@ -54,7 +55,7 @@ export function OAuthClientManager({ clients }: { clients: Client[] }) {
       </form>
 
       {state?.ok ? (
-        <div className="flex flex-col gap-1 border border-border bg-muted p-3 text-xs">
+        <div className="flex flex-col gap-1 rounded-surface border border-border bg-muted p-3 text-xs">
           <span className="font-semibold uppercase tracking-wide">
             {state.name} — copy the secret now, it is not shown again
           </span>

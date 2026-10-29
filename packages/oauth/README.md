@@ -50,10 +50,10 @@ Better Auth's generic OAuth. Users must be invited on the auth host (invite-only
 
 ## Options
 
-| option         | default                     | note                                   |
-| -------------- | --------------------------- | -------------------------------------- |
-| `clientId`     | —                           | required                               |
-| `clientSecret` | —                           | required, server-side                  |
-| `authUrl`      | `https://auth.ter.net.in`   | override for staging / self-host       |
-| `scopes`       | `openid profile email`      |                                        |
-| `providerId`   | `ternetin`                    | id used by `signIn.oauth2`             |
+| option         | default                   | note                             |
+| -------------- | ------------------------- | -------------------------------- |
+| `clientId`     | —                         | required                         |
+| `clientSecret` | —                         | required, server-side            |
+| `authUrl`      | `https://auth.ter.net.in` | override for staging / self-host |
+| `scopes`       | `openid profile email`    |                                  |
+| `providerId`   | `ternetin`                | id used by `signIn.oauth2`       |

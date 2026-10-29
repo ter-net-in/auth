@@ -3,6 +3,7 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { LoginForm } from '@/components/login-form'
 import { safeRedirect } from '@/lib/redirect'
+import { AuthLayout } from '@/ui/auth-layout'
 
 export default async function LoginPage({
   searchParams
@@ -32,8 +33,8 @@ export default async function LoginPage({
   if (session) redirect(target)
 
   return (
-    <main className="flex min-h-dvh items-center justify-center p-6">
+    <AuthLayout>
       <LoginForm redirectTo={target} />
-    </main>
+    </AuthLayout>
   )
 }
