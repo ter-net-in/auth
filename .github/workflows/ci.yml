@@ -60,10 +60,17 @@ jobs:
         run: bun run db:migrate
 
       - name: Profile picture security and storage tests
-        run: bun test packages/auth/test
+        run: bun test packages/auth/test apps/web/src/lib
 
       - name: Build
         run: bun run build
+
+      - name: Install browser
+        run: bun x --no-install playwright install --with-deps chromium
+      - name: Profile picture browser workflows
+        run: bun run test:browser
+        env:
+          PROFILE_TEST_DATABASE: "1"
 
       - name: Build production container
         run: docker build --tag authkit:ci .
