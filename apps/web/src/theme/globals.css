@@ -133,6 +133,10 @@
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+  --color-action: #216ce1;
+  --color-action-end: #0854cc;
+  --color-action-border: #064aba;
+  --color-action-foreground: #ffffff;
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);

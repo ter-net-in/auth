@@ -11,7 +11,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'border-primary bg-primary text-primary-foreground hover:bg-primary/90',
+        default:
+          'border-[color:var(--color-action-border,#064aba)] [background-image:linear-gradient(var(--color-action,#216ce1),var(--color-action-end,#0854cc))] font-semibold text-[color:var(--color-action-foreground,#fff)] hover:brightness-95 active:brightness-90',
         outline:
           'border-border bg-background text-foreground hover:border-primary hover:bg-accent hover:text-accent-foreground',
         ghost: 'border-transparent bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
