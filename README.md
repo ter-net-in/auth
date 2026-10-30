@@ -5,6 +5,8 @@ Better Auth AuthKit for the ter.net.in network. One account, shared across every
 
 Generated with `create-internet-app`, then wired as a central identity gateway.
 
+Shared profile pictures are managed at `/dashboard#profile` and reused by Mail and Rok. See [picture controls, access, and rollout](docs/profile-pictures.md).
+
 ## What it is
 
 - **`apps/web`** (Next.js) — the public page at `auth.ter.net.in`: sign-in, invite
