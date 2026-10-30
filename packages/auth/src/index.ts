@@ -7,6 +7,7 @@ import { APIError } from 'better-auth/api'
 import { nextCookies } from 'better-auth/next-js'
 import { admin, jwt } from 'better-auth/plugins'
 import { consumeInvite, findPendingInvite, isBootstrapAdmin } from './invitations.js'
+import { profilePictureClaims } from './profile-picture-url.js'
 
 // First-party ter.net.in apps registered as OAuth clients get consent auto-skipped.
 const trustedClientIds = new Set(env.TRUSTED_OAUTH_CLIENT_IDS)
@@ -67,6 +68,8 @@ export const auth = betterAuth({
     oauthProvider({
       loginPage: '/login',
       consentPage: '/oauth/consent',
+      customUserInfoClaims: ({ user, scopes }) => profilePictureClaims(user.id, scopes, env.BETTER_AUTH_URL),
+      customIdTokenClaims: ({ user, scopes }) => profilePictureClaims(user.id, scopes, env.BETTER_AUTH_URL),
       cachedTrustedClients: trustedClientIds
     }),
     nextCookies() // nextCookies must stay last

@@ -18,3 +18,13 @@ export const invitation = pgTable('invitation', {
   acceptedAt: timestamp('accepted_at'),
   acceptedBy: text('accepted_by').references(() => user.id, { onDelete: 'set null' })
 })
+
+// Small, normalized WebP pictures use the existing durable database and deletion lifecycle.
+export const profilePicture = pgTable('profile_picture', {
+  userId: text('user_id')
+    .primaryKey()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  content: text('content').notNull(),
+  etag: text('etag').notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull()
+})

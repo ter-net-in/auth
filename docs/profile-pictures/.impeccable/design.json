@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-30T13:18:26.832Z",
+  "title": "Design System: ter.net.in shared profile presentation",
+  "extensions": {
+    "shadows": [
+      {
+        "name": "popup",
+        "value": "0 4px 16px rgba(15, 23, 42, 0.12)",
+        "purpose": "Existing light-theme compact floating surfaces; not static profile cards."
+      },
+      {
+        "name": "modal",
+        "value": "0 16px 48px rgba(15, 23, 42, 0.18)",
+        "purpose": "Existing light-theme modal surfaces, including Mail settings."
+      },
+      {
+        "name": "popup-dark",
+        "value": "0 4px 16px rgba(0, 0, 0, 0.3)",
+        "purpose": "Existing dark-theme compact floating surfaces."
+      },
+      {
+        "name": "modal-dark",
+        "value": "0 16px 48px rgba(0, 0, 0, 0.4)",
+        "purpose": "Existing dark-theme modal surfaces, including Mail settings."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Save picture",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The existing primary action gradient confirms a selected crop.",
+      "html": "<button type=\"button\" class=\"ds-button ds-primary\">Save picture</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;height:2.25rem;padding:0 .875rem;border:1px solid;border-radius:var(--control-radius,.375rem);font-family:var(--font-sans,Inter,system-ui,sans-serif);font-size:.875rem;font-weight:500;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;outline:none}.ds-button:focus-visible{box-shadow:0 0 0 2px var(--ring,#0047ff)}.ds-button:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}@media(pointer:coarse){.ds-button{min-height:2.75rem;min-width:2.75rem}}.ds-primary{border-color:var(--color-action-border,#064aba);background-image:linear-gradient(var(--color-action,#216ce1),var(--color-action-end,#0854cc));color:var(--color-action-foreground,#fff);font-weight:600}.ds-primary:hover{filter:brightness(.95)}.ds-primary:active{filter:brightness(.9)}"
+    },
+    {
+      "name": "Choose picture",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "The outline action selects or replaces a file.",
+      "html": "<button type=\"button\" class=\"ds-button ds-outline\">Choose picture</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;height:2.25rem;padding:0 .875rem;border:1px solid;border-radius:var(--control-radius,.375rem);font-family:var(--font-sans,Inter,system-ui,sans-serif);font-size:.875rem;font-weight:500;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;outline:none}.ds-button:focus-visible{box-shadow:0 0 0 2px var(--ring,#0047ff)}.ds-button:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}@media(pointer:coarse){.ds-button{min-height:2.75rem;min-width:2.75rem}}.ds-outline{border-color:var(--border,rgba(15,23,42,.14));background:var(--background,#f8fafc);color:var(--foreground,#0b1020)}.ds-outline:hover{border-color:var(--primary,#0047ff);background:var(--accent,#eef4ff);color:var(--accent-foreground,#0038cc)}"
+    },
+    {
+      "name": "Cancel crop",
+      "kind": "button",
+      "description": "A quiet ghost action leaves the current crop.",
+      "html": "<button type=\"button\" class=\"ds-button ds-ghost\">Cancel crop</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;height:2.25rem;padding:0 .875rem;border:1px solid;border-radius:var(--control-radius,.375rem);font-family:var(--font-sans,Inter,system-ui,sans-serif);font-size:.875rem;font-weight:500;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;outline:none}.ds-button:focus-visible{box-shadow:0 0 0 2px var(--ring,#0047ff)}.ds-button:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}@media(pointer:coarse){.ds-button{min-height:2.75rem;min-width:2.75rem}}.ds-ghost{border-color:transparent;background:transparent;color:var(--foreground,#0b1020)}.ds-ghost:hover{background:var(--accent,#eef4ff);color:var(--accent-foreground,#0038cc)}"
+    },
+    {
+      "name": "Profile card",
+      "kind": "card",
+      "refersTo": "profile-card",
+      "description": "A static bordered Auth surface contains identity editing.",
+      "html": "<section class=\"ds-card\" aria-labelledby=\"ds-profile-title\"><div class=\"ds-card-heading\"><h2 id=\"ds-profile-title\" class=\"ds-card-title\">Profile picture</h2><p class=\"ds-card-description\">Used in Auth, Mail, and Rok, and beside your messages in Mail.</p></div><p class=\"ds-card-body\">Your initials appear until you choose a picture.</p></section>",
+      "css": ".ds-card{display:flex;flex-direction:column;gap:1rem;padding:1.5rem;border:1px solid var(--border,rgba(15,23,42,.14));border-radius:var(--surface-radius,.5rem);background:var(--card,#fff);color:var(--card-foreground,#0b1020);font-family:var(--font-sans,Inter,system-ui,sans-serif)}.ds-card-heading{display:flex;flex-direction:column;gap:.25rem}.ds-card-title{margin:0;font-size:1.125rem;font-weight:600;line-height:1;letter-spacing:-.02em}.ds-card-description,.ds-card-body{margin:0;font-size:.875rem;line-height:1.5}.ds-card-description{color:var(--muted-foreground,#5f6b7a)}"
+    },
+    {
+      "name": "Initials fallback",
+      "kind": "custom",
+      "refersTo": "avatar",
+      "description": "The same circular footprint is retained when no picture is available.",
+      "html": "<span class=\"ds-avatar\" aria-hidden=\"true\"><span class=\"ds-initials\">AB</span></span>",
+      "css": ".ds-avatar{display:inline-flex;flex-shrink:0;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;overflow:hidden;user-select:none;vertical-align:middle;border:1px solid var(--border,rgba(15,23,42,.14));border-radius:50%;background:var(--muted,#f3f6fb);font-family:var(--font-sans,Inter,system-ui,sans-serif);font-size:.875rem;font-weight:500;text-transform:uppercase}.ds-initials{display:flex;width:100%;height:100%;align-items:center;justify-content:center;color:var(--muted-foreground,#5f6b7a)}"
+    },
+    {
+      "name": "Crop range",
+      "kind": "input",
+      "description": "A labelled native range with percentage output keeps keyboard editing familiar.",
+      "html": "<div class=\"ds-crop-control\"><label class=\"ds-crop-label\" for=\"ds-zoom\">Zoom <span class=\"ds-crop-value\">100%</span></label><input class=\"ds-crop-range\" id=\"ds-zoom\" type=\"range\" min=\"1\" max=\"3\" step=\"0.05\" value=\"1\"></div>",
+      "css": ".ds-crop-control{font-family:var(--font-sans,Inter,system-ui,sans-serif);color:var(--foreground,#0b1020)}.ds-crop-label{display:flex;justify-content:space-between;gap:.75rem;font-size:.875rem;font-weight:500;line-height:1.5}.ds-crop-value{color:var(--muted-foreground,#5f6b7a);font-variant-numeric:tabular-nums}.ds-crop-range{width:100%;height:2.75rem;accent-color:var(--primary,#0047ff)}.ds-crop-range:focus-visible{outline:2px solid var(--ring,#0047ff);outline-offset:2px}.ds-crop-range:disabled{opacity:.5}"
+    },
+    {
+      "name": "Edit profile picture link",
+      "kind": "custom",
+      "description": "Mail and Rok send editing to Auth in a new tab.",
+      "html": "<a class=\"ds-profile-link\" href=\"https://auth.ter.net.in/dashboard#profile\" target=\"_blank\" rel=\"noopener noreferrer\">Edit profile picture</a>",
+      "css": ".ds-profile-link{display:inline-block;min-height:2.75rem;align-content:center;color:var(--primary,#0047ff);font-family:var(--font-sans,Inter,system-ui,sans-serif);font-size:.875rem;text-decoration:underline;text-underline-offset:4px}.ds-profile-link:focus-visible{outline:2px solid var(--ring,#0047ff)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Operate",
+    "overview": "This scoped record captures the finished shared-picture extension inside the established compact, Cloudflare-inspired blue application UI. It extends the incumbent visual authority; it does not establish a new product-wide visual identity. Source values below are shared by Auth, Mail, and Rok. Light and dark frontmatter entries record the existing theme counterparts; components consume the active semantic CSS variables.\n\nPictures add recognition to existing account and sender information. Auth owns editing, while Mail and Rok keep their familiar task layouts. The avatar is supporting identity information rather than a badge of trust.",
+    "keyCharacteristics": [
+      "Compact sans typography and sentence-case actions.",
+      "Blue actions and focus on neutral, bordered surfaces.",
+      "Circular pictures and initials with equivalent layout footprints.",
+      "One Auth editor with quiet reuse in each application."
+    ],
+    "rules": [
+      {
+        "name": "The Role-Owned Depth Rule",
+        "body": "Elevation belongs to the floating component role; picture presence does not add elevation.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Equivalent Footprint Rule",
+        "body": "Loading, missing, failed, and removed pictures retain the image state's circle and allocated space.",
+        "section": "components"
+      },
+      {
+        "name": "The Address Remains Rule",
+        "body": "A sender picture supplements the sender address and never indicates sender verification.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do reuse the same circular Avatar and equivalent initials fallback across all three apps.",
+      "Do keep Auth as the single editor and link to it from Mail settings and the Rok Workspace header.",
+      "Do preserve labelled native crop controls, visible focus, inline feedback, and the pending crop after a failed save.",
+      "Do retain sender addresses beside pictures and preserve the active theme's semantic colors."
+    ],
+    "donts": [
+      "Don't turn a user picture into a verified-sender badge.",
+      "Don't add decorative elevation or public-page corner brackets to profile surfaces.",
+      "Don't treat the synthetic solid-color screenshot fixtures as product assets or brand colors."
+    ]
+  }
+}

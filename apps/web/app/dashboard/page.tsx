@@ -1,10 +1,15 @@
 import { auth, listInvitations } from '@ternetin/auth'
 import { listOAuthClients } from '@ternetin/auth/oauth-clients'
+import { profilePictureUrl } from '@ternetin/auth/profile-pictures'
+import { env } from '@ternetin/config'
 import { countUsers } from '@ternetin/db'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { InviteManager } from '@/components/invite-manager'
 import { OAuthClientManager } from '@/components/oauth-client-manager'
+import { ProfileAvatar } from '@/components/profile-avatar'
+import { ProfilePictureEditor } from '@/components/profile-picture-editor'
+import { pictureStore } from '@/lib/profile-picture-server'
 import { Badge } from '@/ui/badge'
 import { Button } from '@/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/ui/card'
@@ -18,6 +23,8 @@ export default async function DashboardPage() {
 
   const role = (session.user as { role?: string }).role ?? 'member'
   const isAdmin = role === 'admin'
+  const imageUrl = profilePictureUrl(session.user.id, env.BETTER_AUTH_URL)
+  const hasPicture = await pictureStore.has(session.user.id)
 
   const [invites, oauthClients, memberCount] = isAdmin
     ? await Promise.all([listInvitations(), listOAuthClients(), countUsers()])
@@ -34,9 +41,12 @@ export default async function DashboardPage() {
         <PageHeader>
           <div className="flex flex-col gap-1">
             <PageTitle>auth.ter.net.in</PageTitle>
-            <PageDescription>Admin console</PageDescription>
+            <PageDescription>{isAdmin ? 'Account and administration' : 'Your account'}</PageDescription>
           </div>
           <PageActions>
+            <a href="#profile" aria-label="Your profile">
+              <ProfileAvatar src={`${imageUrl}?v=${Date.now()}`} name={session.user.name} />
+            </a>
             <span className="hidden text-sm text-muted-foreground sm:inline">{session.user.email}</span>
             <Badge tone={isAdmin ? 'info' : 'neutral'}>{role}</Badge>
             <form
@@ -52,6 +62,13 @@ export default async function DashboardPage() {
             </form>
           </PageActions>
         </PageHeader>
+
+        <ProfilePictureEditor
+          userId={session.user.id}
+          name={session.user.name}
+          imageUrl={imageUrl}
+          hasPicture={hasPicture}
+        />
 
         {isAdmin ? (
           <>

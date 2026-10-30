@@ -4,8 +4,11 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import * as schema from './schema.js'
 
-export const sql = postgres(env.DATABASE_URL)
-export const db = drizzle(sql, { schema })
+export function createDb(url: string) {
+  const sql = postgres(url)
+  return { sql, db: drizzle(sql, { schema }) }
+}
+export const { sql, db } = createDb(env.DATABASE_URL)
 export { schema }
 
 /** Total registered users (members). */

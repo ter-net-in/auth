@@ -6,6 +6,7 @@
     "includes": ["**", "!**/auth-schema.ts", "!**/drizzle", "!**/dist", "!**/.next", "!**/*.css"]
   },
   "formatter": { "enabled": true, "lineWidth": 120, "indentStyle": "space", "indentWidth": 2 },
+  "markdown": { "parser": { "frontmatter": true } },
   "linter": { "enabled": true, "rules": { "preset": "none" } },
   "javascript": { "formatter": { "quoteStyle": "single", "trailingCommas": "none", "semicolons": "asNeeded" } }
 }
